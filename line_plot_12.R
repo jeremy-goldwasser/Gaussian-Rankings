@@ -1,5 +1,5 @@
-png(file.path(here::here(), "Desktop", "Gaussian Rankings", "line_segments.png"), 
-    width = 2000, height = 1200, res = 300)
+png(file.path(here::here(), "Desktop", "Gaussian Rankings", "Figures", "line_segments_12.png"), 
+    width = 2000, height = 1500, res = 300)
 
 # Define parameters
 x3 <- 2      # Vertical line at X_3
@@ -78,29 +78,28 @@ arrows(
   col = "green"
 )
 
-# Add a point at x = 5 on the green line
-x_value <- 5
-y_value <- u - (x_value / S1) * S2
-points(x_value, y_value, col = "green", pch = 16)
-text(x_value, 0, expression(X[1]), pos = 1, col = "green")
+# Add a point at observed x1 on the green line
+x1 <- 5.5
+y_value <- u - (x1 / S1) * S2
+points(x1, y_value, col = "green", pch = 16)
+text(x1, 0, expression(X[1]), pos = 1, col = "green")
 
 # Add "A" above the green line at x = 4
-x_A <- 4
+x_A <- (x_intersect_green+x1)/2
 y_A <- u - (x_A / S1) * S2
 text(x_A, y_A + 0.3, "A", col = "black")
 
 # Add "B" above the green line at x = 6
-x_B <- 6
+x_B <- (x1 + xlim[2])/2
 y_B <- u - (x_B / S1) * S2
 text(x_B, y_B + 0.3, "B", col = "black")
 
 # Change "A1" to subscript notation A[1]
 text(6.5, 5.5, expression(A[1]), col = "black", cex=1.5)
 
-# Another label at x=5, above the green line
-x1 <- 5
+# Another label at x1, above the green line
 y1 <- u - (x1 / S1) * S2
-text(x1, y1 + 0.4, expression(X[1]), col = "black")
+text(x1, y1 + 0.3, expression(x[1]), col = "black")
 
 # Highlight intersection points
 points(x3, x3, col = "purple", pch = 16)               # Intersection X_3 with X_1=X_2

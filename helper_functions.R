@@ -1,5 +1,3 @@
-
-
 rank_test <- function(means, vars, alpha=0.2, verbose=TRUE) {
   ranking <- rev(order(means))
   X <- means[ranking]
@@ -20,17 +18,14 @@ rank_test <- function(means, vars, alpha=0.2, verbose=TRUE) {
       highest_unseen <- ifelse(j==num_verified+2 & num_verified+2<d, X[num_verified+3], X[num_verified+2])
       starting_point <- max(highest_unseen, mu1j)
       denom <- 1-pnorm(starting_point, mean=mu1j, sd=sqrt(s1j))
-      p_val <- num/denom
+      p_val <- ifelse(denom==0, 0, num/denom)
     })
+    if (verbose) {
+      print(paste0("P-value: ", round(max(p_vals), 3)))
+    }
     if (max(p_vals) < alpha) {
       num_verified <- num_verified + 1
-      if (verbose) {
-        print(paste0("P-value: ", round(max(p_vals), 3)))
-      }
     } else {
-      if (verbose) {
-        print(paste0("P-value: ", round(max(p_vals), 3)))
-      }
       break
     }
   }
@@ -63,7 +58,7 @@ test_for_lowest <- function(means, vars, alpha=0.2, verbose=TRUE) {
       lowest_unseen <- ifelse(j==d-num_verified-1 & j>1, X[j-1], X[d-num_verified-1])
       starting_point <- min(lowest_unseen, mu1j)
       denom <- pnorm(starting_point, mean=mu1j, sd=sqrt(s1j))
-      p_val <- num/denom
+      p_val <- ifelse(denom==0, 0, num/denom)
     })
     if (max(p_vals) < alpha) {
       num_verified <- num_verified + 1
@@ -110,7 +105,7 @@ set_test <- function(means, vars, K, alpha=0.2, verbose=TRUE) {
       highest_unseen <- ifelse(j==(K+1) & j<d, X[K+2], X[K+1])
       starting_point <- max(highest_unseen, mu1j)
       denom <- 1-pnorm(starting_point, mean=mu1j, sd=sqrt(s1j))
-      p_val <- num/denom
+      p_val <- ifelse(denom==0, 0, num/denom)
     })
     union_p_value <- max(p_vals)
     if (union_p_value > alpha) {
@@ -119,8 +114,40 @@ set_test <- function(means, vars, K, alpha=0.2, verbose=TRUE) {
     max_of_all <- max(max_of_all, union_p_value)
   }
   outcome <- ifelse(reject, "reject", "fail to reject")
-  if (verbose) {# & max_of_all > 0
+  if (verbose) {
     print(round(max_of_all, 5))
   }
+  return(outcome)
+}
+
+verify_winner <- function(means, vars, alpha=0.2, verbose=TRUE, return_p_vals=FALSE) {
+  ranking <- rev(order(means))
+  X <- means[ranking]
+  S <- vars[ranking]
+  if (verbose) {
+    print(round(X, 3))
+    print(round(sqrt(S), 3))
+  }
+  d <- length(X)
+
+  x1 <- X[1]; s1 <- S[1]; 
+  p_vals <- sapply(2:d, function(j) {
+    xj <- X[j]; sj <- S[j]
+    s1j <- s1**2/(s1+sj)
+    mu1j <- (x1*sj + xj*s1)/(s1+sj)
+    num <- 1-pnorm(x1, mean=mu1j, sd=sqrt(s1j))
+    highest_unseen <- ifelse(j==2 & d>2, X[3], X[2])
+    starting_point <- max(highest_unseen, mu1j)
+    denom <- 1-pnorm(starting_point, mean=mu1j, sd=sqrt(s1j))
+    p_val <- ifelse(denom==0, 0, num/denom)
+  })
+  max_p_val <- max(p_vals)
+  if (verbose) {
+    print(paste0("P-value: ", round(max_p_val, 3)))
+  }
+  if (return_p_vals) {
+    return(p_vals)
+  }
+  outcome <- ifelse(max_p_val < alpha, "reject", "fail to reject")
   return(outcome)
 }
