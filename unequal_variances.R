@@ -1,5 +1,7 @@
 # Load necessary library
 library(ggplot2)
+library(pracma)
+source(file.path(here::here(), "helper_functions.R"))
 
 # Create a sequence of x values
 x <- seq(-4, 4, by = 0.01)*3
@@ -20,30 +22,11 @@ df5$y <- df5$y*trans
 # Combine the data frames
 df <- rbind(df1, df2, df3, df4, df5)
 
-source(file.path(here::here(), "helper_functions.R"))
-p_vals <- verify_winner(Xs,sds**2, alpha=0.05, return_p_vals=TRUE)
-# round(p_vals, 3)
-# ranked_losers <- rev(order(Xs))[2:5]
-
-# Single dot 
-# red_dot <- data.frame(x = -3, y = dnorm(-3, mean = 2, sd = 5))
-# p <- ggplot(df, aes(x = x, y = y, color = group)) +
-#   geom_line(size = 1.0) +
-#   labs(title = "Comparison of Gaussian Distributions, Unequal Variances",
-#        x = "Value",
-#        y = "Density") +
-#   scale_color_manual(values = c("blue", "green", "violet", "brown", "red")) +
-#   scale_x_continuous(breaks = means) +  # Set x-ticks at the mean values
-#   geom_vline(xintercept = -0.5, linetype = "dashed") + 
-#   theme_minimal() +
-#   theme(legend.position="none") + 
-#   geom_point(data = red_dot, aes(x = x, y = y*trans), color = "red", size = 4)
-# plot(p)
-
-# Data for the red dot
+# "Observed" data
 set.seed(123)
 Xs <- sapply(1:5, function(i) {rnorm(1, means[i], sds[i])})
-Xs[5] <- -3
+Xs[5] <- -3 # Red dot
+p_vals <- verify_winner(Xs,sds**2, alpha=0.05, return_p_vals=TRUE)
 
 dots_df <- data.frame(
   x = Xs,
@@ -110,7 +93,6 @@ x3_vals <- seq(mu3-4*sd3, mu3+4*sd3, length.out = n_points_per_integral)
 q_to_reject <- Z_crit*sd23 # always positive, so integrating X2 > X3
 q_vals <- seq(q_to_reject, (mu2-mu3)+4*sd23, length.out = n_points_per_integral)
 
-
 # Integrate region where X1 loses and X2 significantly above X3
 outer_integral <- sapply(x3_vals, function(x3) {
   middle_integral <- sapply(q_vals, function(q) {
@@ -120,5 +102,5 @@ outer_integral <- sapply(x3_vals, function(x3) {
   trapz(q_vals, middle_integral)
 })
 
-result <- trapz(x3_vals, outer_integral)
-result
+lower_bound_on_type_I_error <- trapz(x3_vals, outer_integral)
+lower_bound_on_type_I_error
