@@ -5,7 +5,7 @@ library(NHANES)
 # Load the dataset
 data("NHANES")
 library(dplyr)
-source(file.path(here::here(), "helper_functions.R"))
+source(file.path(here::here(), "testing_functions.R"))
 
 # Analyze health outcomes by education
 means_income <- aggregate(log(HHIncomeMid) ~ Education, data = NHANES, mean)[,2]

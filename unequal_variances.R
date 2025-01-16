@@ -1,7 +1,7 @@
 # Load necessary library
 library(ggplot2)
 library(pracma)
-source(file.path(here::here(), "helper_functions.R"))
+source(file.path(here::here(), "testing_functions.R"))
 
 # Create a sequence of x values
 x <- seq(-4, 4, by = 0.01)*3
