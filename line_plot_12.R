@@ -1,4 +1,4 @@
-png(file.path(here::here(), "Desktop", "Gaussian Rankings", "Figures", "line_segments_12.png"), 
+png(file.path(here::here(), "Figures", "line_segments_12.png"), 
     width = 2000, height = 1500, res = 300)
 
 # Define parameters

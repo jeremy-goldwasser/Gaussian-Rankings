@@ -1,4 +1,4 @@
-rank_test <- function(means, vars, alpha=0.2, verbose=TRUE) {
+rank_test <- function(means, vars, alpha=0.2, verbose=FALSE, return_p_vals=TRUE) {
   ranking <- rev(order(means))
   X <- means[ranking]
   S <- vars[ranking]
@@ -8,6 +8,7 @@ rank_test <- function(means, vars, alpha=0.2, verbose=TRUE) {
   }
   d <- length(X)
   num_verified <- 0
+  all_p_vals <- c()
   while(num_verified < d-1) {
     x1 <- X[num_verified+1]; s1 <- S[num_verified+1]; 
     p_vals <- sapply((num_verified+2):d, function(j) {
@@ -20,10 +21,12 @@ rank_test <- function(means, vars, alpha=0.2, verbose=TRUE) {
       denom <- 1-pnorm(starting_point, mean=mu1j, sd=sqrt(s1j))
       p_val <- ifelse(denom==0, 0, num/denom)
     })
+    cur_p_val <- max(p_vals)
+    all_p_vals <- c(all_p_vals, cur_p_val)
     if (verbose) {
-      print(paste0("P-value: ", round(max(p_vals), 3)))
+      print(paste0("P-value: ", round(cur_p_val, 3)))
     }
-    if (max(p_vals) < alpha) {
+    if (cur_p_val < alpha) {
       num_verified <- num_verified + 1
     } else {
       break
@@ -32,11 +35,18 @@ rank_test <- function(means, vars, alpha=0.2, verbose=TRUE) {
   if (num_verified==d-1) {
     num_verified <- num_verified+1
   }
+  if (return_p_vals) {
+    # results <- as.character(c(num_verified, round(max(p_vals),4)))
+    # names(results) <- c("K", "max p-val")
+    results <- list(num_verified, round(all_p_vals, 4))
+    names(results) <- c("K", "p-vals")
+    return(results)
+  }
   return(num_verified)
 }
 
 
-test_for_lowest <- function(means, vars, alpha=0.2, verbose=TRUE) {
+test_for_lowest <- function(means, vars, alpha=0.2, verbose=FALSE, return_p_val=TRUE) {
   ranking <- rev(order(means))
   X <- means[ranking]
   S <- vars[ranking]
@@ -46,6 +56,7 @@ test_for_lowest <- function(means, vars, alpha=0.2, verbose=TRUE) {
   }
   d <- length(X)
   num_verified <- 0
+  all_p_vals <- c()
   while(num_verified < d-1) {
     x1 <- X[d-num_verified]; s1 <- S[d-num_verified]; 
     p_vals <- sapply(1:(d-num_verified-1), function(j) {
@@ -60,14 +71,13 @@ test_for_lowest <- function(means, vars, alpha=0.2, verbose=TRUE) {
       denom <- pnorm(starting_point, mean=mu1j, sd=sqrt(s1j))
       p_val <- ifelse(denom==0, 0, num/denom)
     })
-    if (max(p_vals) < alpha) {
+    cur_p_val <- max(p_vals)
+    all_p_vals <- c(all_p_vals, cur_p_val)
+    if (cur_p_val < alpha) {
       num_verified <- num_verified + 1
-      if (verbose) {
-        print(paste0("P-value: ", round(max(p_vals), 3)))
-      }
     } else {
       if (verbose) {
-        print(paste0("P-value: ", round(max(p_vals), 3)))
+        print(paste0("P-value: ", round(cur_p_val, 3)))
       }
       break
     }
@@ -75,13 +85,18 @@ test_for_lowest <- function(means, vars, alpha=0.2, verbose=TRUE) {
   if (num_verified==d-1) {
     num_verified <- num_verified+1
   }
+  if (return_p_val) {
+    results <- list(num_verified, round(all_p_vals, 4))
+    names(results) <- c("K", "p-vals")
+    return(results)
+  }
   return(num_verified)
 }
 
 
 
 
-set_test <- function(means, vars, K, alpha=0.2, verbose=TRUE) {
+set_test <- function(means, vars, K, alpha=0.2, verbose=FALSE, return_p_val=TRUE) {
   ranking <- rev(order(means))
   X <- means[ranking]
   S <- vars[ranking]
@@ -117,10 +132,15 @@ set_test <- function(means, vars, K, alpha=0.2, verbose=TRUE) {
   if (verbose) {
     print(round(max_of_all, 5))
   }
+  if (return_p_val) {
+    results <- as.character(c(outcome, round(max_of_all, 4)))
+    names(results) <- c("K", "max p-val")
+    return(results)
+  }
   return(outcome)
 }
 
-verify_winner <- function(means, vars, alpha=0.2, verbose=TRUE, return_p_vals=FALSE) {
+verify_winner <- function(means, vars, alpha=0.2, verbose=FALSE, return_p_vals=FALSE) {
   ranking <- rev(order(means))
   X <- means[ranking]
   S <- vars[ranking]

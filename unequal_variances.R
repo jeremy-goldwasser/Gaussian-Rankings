@@ -20,7 +20,7 @@ df5$y <- df5$y*trans
 # Combine the data frames
 df <- rbind(df1, df2, df3, df4, df5)
 
-source(file.path(here::here(), "Desktop", "Gaussian Rankings", "helper_functions.R"))
+source(file.path(here::here(), "helper_functions.R"))
 p_vals <- verify_winner(Xs,sds**2, alpha=0.05, return_p_vals=TRUE)
 # round(p_vals, 3)
 # ranked_losers <- rev(order(Xs))[2:5]
@@ -78,7 +78,7 @@ p <- ggplot(df, aes(x = x, y = y, color = group)) +
 plot(p)
 
 # Save the plot
-ggsave(file.path(here::here(), "Desktop", "Gaussian Rankings", "Figures", "gaussian_unequal_vars.pdf"),
+ggsave(file.path(here::here(), "Figures", "gaussian_unequal_vars.pdf"),
        plot = p, device = "pdf", width = 10, height = 3)
 
 #################### Bound Type I error rate ####################
