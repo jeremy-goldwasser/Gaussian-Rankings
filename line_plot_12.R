@@ -1,5 +1,5 @@
-# png(file.path(here::here(), "Figures", "line_segments_12.png"), 
-#     width = 2000, height = 1500, res = 300)
+png(file.path(here::here(), "Figures", "line_segments_12.png"),
+    width = 2000, height = 1500, res = 300)
 
 # Define parameters
 x3 <- 2      # Vertical line at X_3
@@ -120,4 +120,4 @@ legend(
   y.intersp = 0.8       # Reduce vertical spacing
 )
 
-# dev.off()
+dev.off()
