@@ -1,5 +1,5 @@
-png(file.path(here::here(), "Figures", "line_segments_12.png"), 
-    width = 2000, height = 1500, res = 300)
+# png(file.path(here::here(), "Figures", "line_segments_12.png"), 
+#     width = 2000, height = 1500, res = 300)
 
 # Define parameters
 x3 <- 2      # Vertical line at X_3
@@ -80,9 +80,8 @@ arrows(
 
 # Add a point at observed x1 on the green line
 x1 <- 5.5
-y_value <- u - (x1 / S1) * S2
-points(x1, y_value, col = "green", pch = 16)
-text(x1, 0, expression(X[1]), pos = 1, col = "green")
+y1 <- u - (x1 / S1) * S2
+points(x1, y1, col = "green", pch = 16)
 
 # Add "A" above the green line at x = 4
 x_A <- (x_intersect_green+x1)/2
@@ -98,7 +97,7 @@ text(x_B, y_B + 0.3, "B", col = "black")
 text(6.5, 5.5, expression(A[1]), col = "black", cex=1.5)
 
 # Another label at x1, above the green line
-y1 <- u - (x1 / S1) * S2
+
 text(x1, y1 + 0.3, expression(x[1]), col = "black")
 
 # Highlight intersection points
@@ -121,4 +120,4 @@ legend(
   y.intersp = 0.8       # Reduce vertical spacing
 )
 
-dev.off()
+# dev.off()

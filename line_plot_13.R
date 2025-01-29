@@ -116,7 +116,7 @@ legend(
   legend = c(
     expression(X[1] == X[3]),
     expression(X[1] == x[2]),
-    bquote(frac(X[1], sigma[1]^2) + frac(X[3], sigma[2]^2) == u)#.(u)
+    bquote(frac(X[1], sigma[1]^2) + frac(X[3], sigma[3]^2) == u)#.(u)
   ),
   col = c("blue", "red", "green"),
   lty = c(1, 1, 1),
