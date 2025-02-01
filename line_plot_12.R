@@ -24,7 +24,7 @@ ylim <- c(0, 6)
 plot(
   1, type = "n", xlim = xlim, ylim = ylim,
   xlab = expression(X[1]), ylab = expression(X[2]),
-  main = expression(H[0]: ~ mu[1] < mu[2])
+  main = expression(H[0]: ~ mu[1] <= mu[2])
 )
 
 # Draw X_1 = X_2 line

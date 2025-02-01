@@ -23,7 +23,7 @@ plot(
   1, type = "n", xlim = xlim, ylim = ylim,
   xlab = expression(X[1]),
   ylab = expression(X[3]),             # <-- relabeled so the y-axis is now X[3]
-  main = expression(H[0]: ~ mu[1] < mu[3])
+  main = expression(H[0]: ~ mu[1] <= mu[3])
 )
 
 #### 4. Draw the diagonal line X_1 = X_3
