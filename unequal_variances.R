@@ -54,15 +54,18 @@ p <- ggplot(df, aes(x = x, y = y, color = group)) +
   # geom_segment(aes(x = -0.5, xend = -0.5, y = 0, yend = 4), linetype = "dashed") +
   theme_minimal() +
   theme(legend.position = "none") + 
-  annotate("text", x = -3.6, y = dots_df[5, 2] + 0.3, label = "p=0.42", color = "black", size = 4) +
-  annotate("text", x = 0, y = 4.2, label = "p=2e-9", color = "black", size = 4) +
+  annotate("text", x = -3.5, y = dots_df[5, 2] + 0.45, label = "p=0.42", color = "black", size = 4) +
+  annotate("text", x = 0, y = 4.3, label = "p=2e-9", color = "black", size = 4) +
   geom_point(data = dots_df, aes(x = x, y = y, color = group), size = 4)
+  # annotate("text", x = -3.6, y = dots_df[5, 2] + 0.3, label = "p=0.42", color = "black", size = 4) +
+  # annotate("text", x = 0, y = 4.2, label = "p=2e-9", color = "black", size = 4) +
+  # geom_point(data = dots_df, aes(x = x, y = y, color = group), size = 4)
 
 plot(p)
 
 # Save the plot
 ggsave(file.path(here::here(), "Figures", "gaussian_unequal_vars.pdf"),
-       plot = p, device = "pdf", width = 10, height = 3)
+       plot = p, device = "pdf", width = 10, height = 2.5)#3
 
 #################### Bound Type I error rate ####################
 # Type I error = winner is not best, yet test against runner-up rejects

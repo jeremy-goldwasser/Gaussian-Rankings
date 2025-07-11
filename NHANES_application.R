@@ -8,43 +8,43 @@ library(dplyr)
 source(file.path(here::here(), "testing_functions.R"))
 
 # Analyze health outcomes by education
-means_income <- aggregate(log(HHIncomeMid) ~ Education, data = NHANES, mean)[,2]
+vals_income <- aggregate(log(HHIncomeMid) ~ Education, data = NHANES, mean)[,2]
 vars_income <- aggregate(log(HHIncomeMid) ~ Education, data = NHANES, var)[,2] / 
   aggregate(log(HHIncomeMid) ~ Education, data = NHANES, length)[,2]
 
-means_sleep <- aggregate(SleepHrsNight ~ Education, data = NHANES, mean)[,2]
+vals_sleep <- aggregate(SleepHrsNight ~ Education, data = NHANES, mean)[,2]
 vars_sleep <- aggregate(SleepHrsNight ~ Education, data = NHANES, var)[,2] / 
   aggregate(SleepHrsNight ~ Education, data = NHANES, length)[,2]
 
-means_mental <- aggregate(DaysMentHlthBad ~ Education, data = NHANES, mean)[,2]
+vals_mental <- aggregate(DaysMentHlthBad ~ Education, data = NHANES, mean)[,2]
 vars_mental <- aggregate(DaysMentHlthBad ~ Education, data = NHANES, var)[,2] / 
   aggregate(DaysMentHlthBad ~ Education, data = NHANES, length)[,2]
 
 # Table 1: Exploratory analysis of these variables
 data.frame(Education=levels(NHANES$Education),
            N=as.integer(table(NHANES$Education)),
-           LogIncome=round(means_income, 2), 
-           HoursSleep=round(means_sleep, 2), 
-           DaysBadMentalHealth=round(means_mental, 2))
+           LogIncome=round(vals_income, 2), 
+           HoursSleep=round(vals_sleep, 2), 
+           DaysBadMentalHealth=round(vals_mental, 2))
 
 # Y=log income, X=education group: ranks 5/5
-rank_test(means_income,vars_income, alpha=0.001)
-set_test(means_income,vars_income, 3, alpha=0.001)
+rank_test(vals_income,vars_income, alpha=0.001)
+set_test(vals_income,vars_income, 3, alpha=0.001)
 
 # Y=sleep hours, X=education group: top ranks 1/5 (alpha=0.1), bottom 0
-rank_test(means_sleep, vars_sleep, alpha=0.1)
-test_for_lowest(means_sleep, vars_sleep, alpha=0.1)
-set_test(means_sleep,vars_sleep, 3, alpha=0.1)
+rank_test(vals_sleep, vars_sleep, alpha=0.1)
+test_for_lowest(vals_sleep, vars_sleep, alpha=0.1)
+set_test(vals_sleep,vars_sleep, 3, alpha=0.1)
 
 # Y=bad mental health, X=education group: top ranks 0/5, bottom 1
-rank_test(means_mental,vars_mental, alpha=0.1)
-test_for_lowest(means_mental,vars_mental, alpha=0.01)
-set_test(means_mental,vars_mental, 3, alpha=0.1)
+rank_test(vals_mental,vars_mental, alpha=0.1)
+test_for_lowest(vals_mental,vars_mental, alpha=0.01)
+set_test(vals_mental,vars_mental, 3, alpha=0.1)
 
 
 ############## Validation #####################
 # Simulate data
-true_means <- means_sleep
+true_means <- vals_sleep
 true_vars <- vars_sleep
 n_sampled_sets <- 10000
 set.seed(1)

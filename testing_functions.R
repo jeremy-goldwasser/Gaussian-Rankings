@@ -1,6 +1,6 @@
-rank_test <- function(means, vars, alpha=0.2, verbose=FALSE, return_p_vals=TRUE) {
-  ranking <- rev(order(means))
-  X <- means[ranking]
+rank_test <- function(vals, vars, alpha=0.2, verbose=FALSE, return_p_vals=TRUE) {
+  ranking <- rev(order(vals))
+  X <- vals[ranking]
   S <- vars[ranking]
   if (verbose) {
     print(round(X, 3))
@@ -46,9 +46,9 @@ rank_test <- function(means, vars, alpha=0.2, verbose=FALSE, return_p_vals=TRUE)
 }
 
 
-test_for_lowest <- function(means, vars, alpha=0.2, verbose=FALSE, return_p_val=TRUE) {
-  ranking <- rev(order(means))
-  X <- means[ranking]
+test_for_lowest <- function(vals, vars, alpha=0.2, verbose=FALSE, return_p_val=TRUE) {
+  ranking <- rev(order(vals))
+  X <- vals[ranking]
   S <- vars[ranking]
   if (verbose) {
     print(round(X, 3))
@@ -96,9 +96,9 @@ test_for_lowest <- function(means, vars, alpha=0.2, verbose=FALSE, return_p_val=
 
 
 
-set_test <- function(means, vars, K, alpha=0.2, verbose=FALSE, return_p_val=TRUE) {
-  ranking <- rev(order(means))
-  X <- means[ranking]
+set_test <- function(vals, vars, K, alpha=0.2, verbose=FALSE, return_p_val=TRUE) {
+  ranking <- rev(order(vals))
+  X <- vals[ranking]
   S <- vars[ranking]
   if (verbose) {
     print(round(X, 3))
@@ -134,15 +134,15 @@ set_test <- function(means, vars, K, alpha=0.2, verbose=FALSE, return_p_val=TRUE
   }
   if (return_p_val) {
     results <- as.character(c(outcome, round(max_of_all, 4)))
-    names(results) <- c("K", "max p-val")
+    names(results) <- c("outcome", "max p-val")
     return(results)
   }
   return(outcome)
 }
 
-verify_winner <- function(means, vars, alpha=0.2, verbose=FALSE, return_p_vals=FALSE) {
-  ranking <- rev(order(means))
-  X <- means[ranking]
+verify_winner <- function(vals, vars, alpha=0.2, verbose=FALSE, return_p_vals=FALSE) {
+  ranking <- rev(order(vals))
+  X <- vals[ranking]
   S <- vars[ranking]
   if (verbose) {
     print(round(X, 3))

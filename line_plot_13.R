@@ -1,6 +1,6 @@
 png(
   file.path(here::here(), "Figures", "line_segments_13.png"), 
-  width = 2000, height = 1500, res = 300#1200
+  width = 2000, height = 1250, res = 300#1200
 )
 
 #### 1. Define parameters

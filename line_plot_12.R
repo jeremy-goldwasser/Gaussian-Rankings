@@ -1,5 +1,5 @@
 png(file.path(here::here(), "Figures", "line_segments_12.png"),
-    width = 2000, height = 1500, res = 300)
+    width = 2000, height = 1250, res = 300)
 
 # Define parameters
 x3 <- 2      # Vertical line at X_3
